@@ -1,0 +1,55 @@
+package:
+  name: conda-offline-channel
+  version: {{ GIT_DESCRIBE_TAG }}
+
+source:
+  #git_url: ../
+  path: ../
+
+build:
+  number: 0
+  entry_points:
+    - conda-offline-channel = conda_offline_channel.cli.main_offline_channel:main
+
+requirements:
+  build:
+    - python
+    - setuptools
+    - setuptools_scm
+    - conda
+    - conda-build
+    - typing  # [py<34]
+
+  run:
+    - conda
+    - conda-build
+    - typing  # [py<34]
+
+test:
+  requires:
+    - pytest
+    - pytest-cov
+
+  commands:
+    - which conda-offline-channel  # [unix]
+    - where conda-offline-channel  # [win]
+    - conda offline-channel -h
+    # test that conda sees entry points appropriately in help
+    - conda --help
+
+  imports:
+    - conda_offline_channel
+
+outputs:
+  - type: wheel
+  - name: {{ PKG_NAME }}
+
+about:
+  home: https://github.com/lambdalisue/conda-offline-channel
+  license: MIT License
+  summary: 'Build an offline conda channel which contains all requirements'
+  license_family: MIT
+
+# See
+# http://docs.continuum.io/conda/build.html for
+# more information about meta.yaml
