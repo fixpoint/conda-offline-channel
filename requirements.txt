@@ -1,6 +1,3 @@
 conda
 conda-build
-requests
-requests-file
-progressbar2
 typing; python_version < 3.5
