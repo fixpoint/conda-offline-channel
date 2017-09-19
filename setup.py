@@ -10,12 +10,6 @@ entry_points = {
     ],
 }
 
-if sys.platform.startswith('win'):
-    # Add 'ksservice' in Windows
-    entry_points['console_scripts'].append(
-        'ksservice=ksocket.service.windows:main'
-    )
-
 
 setup(
     name=NAME,
