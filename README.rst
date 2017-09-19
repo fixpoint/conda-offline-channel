@@ -3,12 +3,22 @@ conda-offline-channel
 
 A conda subcommand to build an offline channel which contains all requirements.
 
+I'm planning to add this feature into an official conda-bld repository.
+See https://github.com/conda/conda-build/issues/2387 for more detail.
+
 
 Requirements
 ==================================================================
 
 - conda
 - conda-build
+
+
+Install
+==================================================================
+::
+
+  conda install -c lambdalisue conda-offline-channel 
 
 
 Usage

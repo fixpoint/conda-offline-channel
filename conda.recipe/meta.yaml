@@ -18,31 +18,24 @@ requirements:
     - setuptools_scm
     - conda
     - conda-build
-    - typing  # [py<34]
+    - typing  # [py<35]
 
   run:
+    - python
     - conda
     - conda-build
-    - typing  # [py<34]
+    - typing  # [py<35]
 
 test:
-  requires:
-    - pytest
-    - pytest-cov
-
   commands:
     - which conda-offline-channel  # [unix]
     - where conda-offline-channel  # [win]
     - conda offline-channel -h
     # test that conda sees entry points appropriately in help
     - conda --help
-
+  
   imports:
     - conda_offline_channel
-
-outputs:
-  - type: wheel
-  - name: {{ PKG_NAME }}
 
 about:
   home: https://github.com/lambdalisue/conda-offline-channel
