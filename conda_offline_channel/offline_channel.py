@@ -85,16 +85,36 @@ def build_offline_channel(root_dir,         # type: str
                        chunk_size=chunk_size,
                        quiet=quiet)
     # build index
-    config = Config(
-        verbose=not quiet,
-    )
+
     kwargs = dict(
-        config=config,
         force=False,
         check_md5=False,
         remove=True,
         lock=None,
         could_be_mirror=True,
     )
-    update_index(os.path.join(root_dir, 'noarch'), **kwargs)
-    update_index(os.path.join(root_dir, subdir), **kwargs)
+    config = Config(verbose=not quiet)
+    try:
+        update_index(
+            os.path.join(root_dir, 'noarch'),
+            config=config,
+            **kwargs
+        )
+        update_index(
+            os.path.join(root_dir, subdir),
+            config=config,
+            **kwargs
+        )
+    except TypeError:
+        # conda-build 2.x.x did not support 'config'
+        # ref: 95eefe623c26f456872fe8761f4d0448dba76b49
+        update_index(
+            os.path.join(root_dir, 'noarch'),
+            verbose=not quiet,
+            **kwargs
+        )
+        update_index(
+            os.path.join(root_dir, subdir),
+            verbose=not quiet,
+            **kwargs
+        )
