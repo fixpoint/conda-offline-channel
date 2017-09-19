@@ -26,7 +26,7 @@ def parse_args(args):
         default=[],
     )
     p.add_argument(
-        '-r', '--root_dir',
+        '-r', '--root-dir',
         help='Directory that become an offline channel.',
         default=os.path.join(os.getcwd(), 'channel'),
     )
