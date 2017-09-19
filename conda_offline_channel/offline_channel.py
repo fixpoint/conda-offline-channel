@@ -9,7 +9,7 @@ from conda_build.index import update_index
 from conda_build.conda_interface import (Resolve, get_index, specs_from_args,
                                          subdir, CondaSession)
 
-if typing.TYPE_CHECKING:
+if getattr(typing, 'TYPE_CHECKING', False):
     from typing import Collection, Iterator  # noqa: F401
 
     from conda_build.conda_interface import IndexRecord  # noqa: F401
