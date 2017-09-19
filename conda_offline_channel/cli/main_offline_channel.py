@@ -1,14 +1,12 @@
 from __future__ import absolute_import, division, print_function
 
-import logging
 import os
 import sys
 
-from conda_build.conda_interface import ArgumentParser
-from ..offline_channel import build_offline_channel
-
-
-logging.basicConfig(level=logging.INFO)
+from ..conda_interface import (ArgumentParser, DryRunExit, add_parser_channels,
+                               add_parser_quiet, add_parser_show_channel_urls,
+                               add_parser_yes)
+from ..offline_channel import build_channel
 
 
 def parse_args(args):
@@ -20,11 +18,12 @@ def parse_args(args):
     )
 
     p.add_argument(
-        'packages',
-        help='Package included in the channel.',
-        nargs='*',
+        'package_specs',
+        help='Packages will be included in the offline channel.',
+        nargs='+',
         default=[],
     )
+
     p.add_argument(
         '-r', '--root-dir',
         help='Directory that become an offline channel.',
@@ -37,39 +36,32 @@ def parse_args(args):
         default=None,
     )
 
-    p.add_argument(
-        '-c', '--channel',
-        nargs='*',
-        default=[],
-    )
-
-    p.add_argument(
-        '--override-channel',
-        action='store_true',
-        default=False,
-    )
-
-    p.add_argument(
-        '-q', '--quiet',
-        action='store_true',
-        help='Don\'t show progress.',
-    )
+    add_parser_channels(p)
+    add_parser_quiet(p)
+    add_parser_show_channel_urls(p)
+    add_parser_yes(p)
 
     args = p.parse_args(args)
+
     return p, args
 
 
 def execute(args):
     _, args = parse_args(args)
-    build_offline_channel(
+    build_channel(
+        args.package_specs,
         args.root_dir,
-        args.packages,
-        args.platform,
-        args.channel,
-        not args.override_channel,
+        channel_urls=args.channel or (),
+        prepend=not args.override_channels,
+        platform=args.platform,
         quiet=args.quiet,
+        confirm_proceed=not args.yes,
+        show_channel_urls=args.show_channel_urls,
     )
 
 
 def main():
-    return execute(sys.argv[1:])
+    try:
+        return execute(sys.argv[1:])
+    except DryRunExit:
+        pass

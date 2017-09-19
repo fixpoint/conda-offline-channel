@@ -15,10 +15,10 @@ help: ## Show this help
 build: ## Build packages for each Python
 	@echo "${GREEN}Building packages for each Python${RESET}"
 	@rm -rf .conda-bld
-	@conda-build ${ARGS} --python 2.7 --output-folder .conda-bld .
-	@conda-build ${ARGS} --python 3.4 --output-folder .conda-bld .
-	@conda-build ${ARGS} --python 3.5 --output-folder .conda-bld .
-	@conda-build ${ARGS} --python 3.6 --output-folder .conda-bld .
+	@conda-build ${ARGS} --python 2.7 --output-folder .conda-bld --override-channels --channel defaults .
+	@conda-build ${ARGS} --python 3.4 --output-folder .conda-bld --override-channels --channel defaults .
+	@conda-build ${ARGS} --python 3.5 --output-folder .conda-bld --override-channels --channel defaults .
+	@conda-build ${ARGS} --python 3.6 --output-folder .conda-bld --override-channels --channel defaults .
 
 
 .PHONY: convert
@@ -30,8 +30,8 @@ convert: ## Convert each packages for all platforms
 .PHONY: upload
 upload: ## Upload all packages
 	@echo "${GREEN}Upload all packages${RESET}"
-	@anaconda upload --force .conda-bld/linux-32/conda-offline-channel-0.0.0-*.tar.bz2
-	@anaconda upload --force .conda-bld/linux-64/conda-offline-channel-0.0.0-*.tar.bz2
-	@anaconda upload --force .conda-bld/osx-64/conda-offline-channel-0.0.0-*.tar.bz2
-	@anaconda upload --force .conda-bld/win-32/conda-offline-channel-0.0.0-*.tar.bz2
-	@anaconda upload --force .conda-bld/win-64/conda-offline-channel-0.0.0-*.tar.bz2
+	@anaconda upload --force .conda-bld/linux-32/conda-offline-channel-*.tar.bz2
+	@anaconda upload --force .conda-bld/linux-64/conda-offline-channel-*.tar.bz2
+	@anaconda upload --force .conda-bld/osx-64/conda-offline-channel-*.tar.bz2
+	@anaconda upload --force .conda-bld/win-32/conda-offline-channel-*.tar.bz2
+	@anaconda upload --force .conda-bld/win-64/conda-offline-channel-*.tar.bz2

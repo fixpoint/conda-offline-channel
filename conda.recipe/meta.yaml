@@ -7,7 +7,7 @@ source:
   path: ../
 
 build:
-  number: 0
+  # number: 0
   entry_points:
     - conda-offline-channel = conda_offline_channel.cli.main_offline_channel:main
 
@@ -16,22 +16,17 @@ requirements:
     - python
     - setuptools
     - setuptools_scm
-    - conda
-    - conda-build
-    - typing  # [py<35]
 
   run:
     - python
-    - conda
-    - conda-build
-    - typing  # [py<35]
+    - conda >=4.3.0
+    - conda-build >=3.0.0
 
 test:
   commands:
     - which conda-offline-channel  # [unix]
     - where conda-offline-channel  # [win]
     - conda offline-channel -h
-    # test that conda sees entry points appropriately in help
     - conda --help
   
   imports:
