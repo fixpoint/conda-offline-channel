@@ -92,11 +92,16 @@ def build_channel(package_specs,    # type: Collection[str]
         print('The following packages will be DOWNLOADED:')
         print('')
         for p in packages:
-            print('\t%s %s %s' % (
+            msg = '\t%s %s %s' % (
                 (p.name + ':').ljust(maxsize_name + 1),
                 p.version.ljust(maxsize_version),
                 p.channel if show_channel_urls else p.schannel,
-            ))
+            )
+            try:
+                msg += ' ' + p.features
+            except AttributeError:
+                pass
+            print(msg)
         print('')
 
     if confirm_proceed and confirm() == 'no':
