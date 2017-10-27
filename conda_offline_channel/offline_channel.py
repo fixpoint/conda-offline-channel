@@ -39,7 +39,8 @@ def download_to_channel(
         getattr(record, 'subdir', context.subdir),
         record.fn,
     )
-    os.makedirs(os.path.dirname(dst), exist_ok=True)
+    if not os.path.exists(os.path.dirname(dst)):
+        os.makedirs(os.path.dirname(dst))
     gateway_download(record.url, dst,
                      md5sum=record.md5,
                      progress_update_callback=progress_update_callback)
