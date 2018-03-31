@@ -21,6 +21,7 @@ requirements:
     - python
     - conda >=4.3.0
     - conda-build >=3.0.0
+    - typing # [py27 or py34 or py35]
 
 test:
   commands:
