@@ -2,7 +2,11 @@ from __future__ import absolute_import, division, print_function
 
 import os
 
-from typing import TYPE_CHECKING
+try:
+    from typing import TYPE_CHECKING
+except ImportError:
+    TYPE_CHECKING = False
+
 from conda_build.index import update_index
 
 from .conda_interface import (PLATFORM_DIRECTORIES, ProgressBar, Resolve,
