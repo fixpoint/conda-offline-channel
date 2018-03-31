@@ -15,10 +15,10 @@ help: ## Show this help
 build: ## Build packages for each Python
 	@echo "${GREEN}Building packages for each Python${RESET}"
 	@rm -rf .conda-bld
-	@conda-build ${ARGS} --python 2.7 --output-folder .conda-bld --override-channels --channel defaults .
-	@conda-build ${ARGS} --python 3.4 --output-folder .conda-bld --override-channels --channel defaults .
-	@conda-build ${ARGS} --python 3.5 --output-folder .conda-bld --override-channels --channel defaults .
-	@conda-build ${ARGS} --python 3.6 --output-folder .conda-bld --override-channels --channel defaults .
+	@conda-build ${ARGS} --python 2.7 --output-folder .conda-bld --override-channels --channel defaults --channel conda-forge .
+	@conda-build ${ARGS} --python 3.4 --output-folder .conda-bld --override-channels --channel defaults --channel conda-forge .
+	@conda-build ${ARGS} --python 3.5 --output-folder .conda-bld --override-channels --channel defaults --channel conda-forge .
+	@conda-build ${ARGS} --python 3.6 --output-folder .conda-bld --override-channels --channel defaults --channel conda-forge .
 
 
 .PHONY: convert
