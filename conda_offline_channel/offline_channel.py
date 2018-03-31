@@ -2,11 +2,16 @@ from __future__ import absolute_import, division, print_function
 
 import os
 
+from typing import TYPE_CHECKING
 from conda_build.index import update_index
 
 from .conda_interface import (PLATFORM_DIRECTORIES, ProgressBar, Resolve,
                               confirm, context, gateway_download, get_index,
                               specs_from_args)
+
+if TYPE_CHECKING:
+    from typing import Collection, Callable, Iterator     # noqa: F401
+    from .conda_interface import IndexRecord    # noqa: F401
 
 
 def solve_dependencies(package_specs,    # type: Collection[str]
@@ -76,9 +81,10 @@ def build_channel(package_specs,    # type: Collection[str]
                   quiet=False,      # type: bool
                   confirm_proceed=True,     # type: bool
                   show_channel_urls=False,  # type: bool
+                  ignore_builtins=False,    # type: bool
                   ):
     # type: (...) -> None
-    packages = tuple(solve_dependencies(
+    packages = set(solve_dependencies(
         package_specs,
         channel_urls=channel_urls,
         prepend=prepend,
@@ -86,6 +92,21 @@ def build_channel(package_specs,    # type: Collection[str]
         use_local=use_local,
         use_cache=use_cache,
     ))
+
+    if ignore_builtins:
+        # Remove builtin packages
+        packages -= set(solve_dependencies(
+            ['conda'],
+            channel_urls=channel_urls,
+            prepend=prepend,
+            platform=platform,
+            use_local=use_local,
+            use_cache=use_cache,
+        ))
+
+    if not packages:
+        print('No dependencies are detected.')
+        return
 
     if not quiet:
         maxsize_name = max((len(p.name) for p in packages))
@@ -99,7 +120,7 @@ def build_channel(package_specs,    # type: Collection[str]
                 p.channel if show_channel_urls else p.schannel,
             )
             try:
-                msg += ' ' + p.features
+                msg += ' ' + ' '.join(p.features)
             except AttributeError:
                 pass
             print(msg)

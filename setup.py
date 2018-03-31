@@ -39,5 +39,10 @@ setup(
         'console_scripts': [
             'conda-offline-channel=conda_offline_channel.cli.main_offline_channel:main'
         ],
-    }
+    },
+    dependency_links=[
+        'git+https://github.com/conda/conda#egg=conda-5',
+        'git+https://github.com/conda/conda-build#egg=conda-build-3',
+        'git+https://github.com/conda/conda-verify#egg=conda-verify-0',
+    ],
 )

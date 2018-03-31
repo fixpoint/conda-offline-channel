@@ -36,6 +36,13 @@ def parse_args(args):
         default=None,
     )
 
+    p.add_argument(
+        '-k', '--ignore-builtins',
+        help='Ignore dependencies included in "conda" package',
+        default=False,
+        action='store_true',
+    )
+
     add_parser_channels(p)
     add_parser_quiet(p)
     add_parser_show_channel_urls(p)
@@ -57,6 +64,7 @@ def execute(args):
         quiet=args.quiet,
         confirm_proceed=not args.yes,
         show_channel_urls=args.show_channel_urls,
+        ignore_builtins=args.ignore_builtins,
     )
 
 
