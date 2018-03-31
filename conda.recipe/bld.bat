@@ -1,4 +1,4 @@
-"%PYTHON%" -m pip install . --no-deps --ignore-installed
+"%PYTHON%" -m pip install . --disable-pip-version-check --no-deps --ignore-installed
 if errorlevel 1 exit 1
 
 :: Add more build steps here, if they are necessary.

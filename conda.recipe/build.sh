@@ -1,6 +1,6 @@
 #!/bin/bash
 
-$PYTHON -m pip install . --no-deps --ignore-installed
+$PYTHON -m pip install . --disable-pip-version-check --no-deps --ignore-installed
 
 # Add more build steps here, if they are necessary.
 
