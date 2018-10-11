@@ -74,6 +74,7 @@ def build_channel(package_specs,    # type: Collection[str]
                   confirm_proceed=True,     # type: bool
                   show_channel_urls=False,  # type: bool
                   ignore_builtins=False,    # type: bool
+                  ignores=(),       # type: Collection[str]
                   ):
     # type: (...) -> None
     packages = set(solve_dependencies(
@@ -89,6 +90,16 @@ def build_channel(package_specs,    # type: Collection[str]
         # Remove builtin packages
         packages -= set(solve_dependencies(
             ['conda'],
+            channel_urls=channel_urls,
+            prepend=prepend,
+            platform=platform,
+            use_local=use_local,
+            use_cache=use_cache,
+        ))
+    if ignores:
+        # Remove given packages
+        packages -= set(solve_dependencies(
+            list(ignores),
             channel_urls=channel_urls,
             prepend=prepend,
             platform=platform,

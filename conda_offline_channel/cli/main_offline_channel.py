@@ -42,6 +42,11 @@ def parse_args(args):
         default=False,
         action='store_true',
     )
+    p.add_argument(
+        '-i', '--ignores',
+        help='Ignore dependencies of given package',
+        action='append',
+    )
 
     add_parser_channels(p)
     add_parser_quiet(p)
@@ -65,6 +70,7 @@ def execute(args):
         confirm_proceed=not args.yes,
         show_channel_urls=args.show_channel_urls,
         ignore_builtins=args.ignore_builtins,
+        ignores=args.ignores,
     )
 
 
