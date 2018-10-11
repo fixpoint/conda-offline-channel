@@ -33,7 +33,7 @@ def solve_dependencies(package_specs,    # type: Collection[str]
                       use_local=use_local,
                       use_cache=use_cache)
     r = Resolve(index)
-    for dist in r.solve(specs):
+    for dist in r.solve(specs, _remove=True):
         yield index[dist]
 
 
@@ -55,24 +55,12 @@ def download_to_channel(
                      progress_update_callback=progress_update_callback)
 
 
-def update_channel_indexes(channel_dir,
-                           force=False,
-                           check_md5=True,
-                           remove=True,
-                           lock=None,
-                           could_be_mirror=True,
-                           quiet=False):
+def update_channel_indices(channel_dir, **kwargs):
     for subdir in PLATFORM_DIRECTORIES:
         path = os.path.join(channel_dir, subdir)
         if not os.path.exists(path):
             continue
-        update_index(path,
-                     force=force,
-                     check_md5=check_md5,
-                     remove=remove,
-                     lock=lock,
-                     could_be_mirror=could_be_mirror,
-                     verbose=not quiet)
+        update_index(path, **kwargs)
 
 
 def build_channel(package_specs,    # type: Collection[str]
@@ -142,4 +130,4 @@ def build_channel(package_specs,    # type: Collection[str]
         )
         download_to_channel(p, channel_dir, pbar.update_to)
 
-    update_channel_indexes(channel_dir, force=True)
+    update_channel_indices(channel_dir, verbose=not quiet)
