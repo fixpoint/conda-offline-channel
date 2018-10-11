@@ -1,7 +1,9 @@
-LANG  := C
-CYAN  := \033[36m
-GREEN := \033[32m
-RESET := \033[0m
+LANG     := C
+CYAN     := \033[36m
+GREEN    := \033[32m
+RESET    := \033[0m
+CONDA    := conda
+ANACONDA := anaconda
 
 
 # http://postd.cc/auto-documented-makefile/
@@ -15,23 +17,24 @@ help: ## Show this help
 build: ## Build packages for each Python
 	@echo "${GREEN}Building packages for each Python${RESET}"
 	@rm -rf .conda-bld
-	@conda-build ${ARGS} --python 2.7 --output-folder .conda-bld --override-channels --channel defaults --channel conda-forge .
-	@conda-build ${ARGS} --python 3.4 --output-folder .conda-bld --override-channels --channel defaults --channel conda-forge .
-	@conda-build ${ARGS} --python 3.5 --output-folder .conda-bld --override-channels --channel defaults --channel conda-forge .
-	@conda-build ${ARGS} --python 3.6 --output-folder .conda-bld --override-channels --channel defaults --channel conda-forge .
+	@${CONDA} build ${ARGS} --python 2.7 --output-folder .conda-bld --override-channels --channel defaults --channel conda-forge .
+	@${CONDA} build ${ARGS} --python 3.4 --output-folder .conda-bld --override-channels --channel defaults --channel conda-forge .
+	@${CONDA} build ${ARGS} --python 3.5 --output-folder .conda-bld --override-channels --channel defaults --channel conda-forge .
+	@${CONDA} build ${ARGS} --python 3.6 --output-folder .conda-bld --override-channels --channel defaults --channel conda-forge .
+	@${CONDA} build ${ARGS} --python 3.7 --output-folder .conda-bld --override-channels --channel defaults --channel conda-forge .
 
 
 .PHONY: convert
 convert: ## Convert each packages for all platforms
 	@echo "${GREEN}Convert each packages for all platforms${RESET}"
-	@conda-convert ${ARGS} -f --platform all  .conda-bld/*/conda-offline-channel-*.tar.bz2 -o .conda-bld
+	@${CONDA} convert ${ARGS} -f --platform all  .conda-bld/*/conda-offline-channel-*.tar.bz2 -o .conda-bld
 
 
 .PHONY: upload
 upload: ## Upload all packages
 	@echo "${GREEN}Upload all packages${RESET}"
-	@anaconda upload --force .conda-bld/linux-32/conda-offline-channel-*.tar.bz2
-	@anaconda upload --force .conda-bld/linux-64/conda-offline-channel-*.tar.bz2
-	@anaconda upload --force .conda-bld/osx-64/conda-offline-channel-*.tar.bz2
-	@anaconda upload --force .conda-bld/win-32/conda-offline-channel-*.tar.bz2
-	@anaconda upload --force .conda-bld/win-64/conda-offline-channel-*.tar.bz2
+	@${ANACONDA} upload --force .conda-bld/linux-32/conda-offline-channel-*.tar.bz2
+	@${ANACONDA} upload --force .conda-bld/linux-64/conda-offline-channel-*.tar.bz2
+	@${ANACONDA} upload --force .conda-bld/osx-64/conda-offline-channel-*.tar.bz2
+	@${ANACONDA} upload --force .conda-bld/win-32/conda-offline-channel-*.tar.bz2
+	@${ANACONDA} upload --force .conda-bld/win-64/conda-offline-channel-*.tar.bz2
